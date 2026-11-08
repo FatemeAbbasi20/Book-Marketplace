@@ -361,3 +361,15 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Archive files
+*.zip
+*.rar
+*.7z
+
+# Build files
+bin/
+obj/
+
+# IDE files
+.vs/
+.vscode/
