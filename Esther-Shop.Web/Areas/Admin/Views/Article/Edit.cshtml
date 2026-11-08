@@ -1,0 +1,57 @@
+﻿@using Esther_Shop.CoreLayer.Services.ArticleCategory
+@using Esther_Shop.CoreLayer.Services.Category
+@using Esther_Shop.Web.Areas.Admin.Models.Article
+@model EditArticleViewModel
+@inject IArticleCategoryService _articleCategoryService
+@{
+    ViewData["Title"] = "ویرایش مقاله ";
+    var Categories = _articleCategoryService.GetAllArticleCategory();
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="Home" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li><a><i asp-area="Admin" asp-controller="Article" asp-action="Index" class="fa fa-dashboard"></i>  مقالات </a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+<section class="content">
+    <form class="box box-danger" method="post" asp-area="Admin" asp-controller="Article" asp-action="Edit" enctype="multipart/form-data">
+        <div class="box-body row">
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.ImageFile)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Title)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Slug)
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.MetaDescription)
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.Description)
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="@Model.CategoryId"></label>
+                    <select asp-for="@Model.CategoryId" class="form-control">
+                        <option value="null">انتخاب کنید</option>
+                        @foreach (var item in Categories)
+                        {
+                            <option value="@item.Id">@item.Title </option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.CategoryId"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.IsPublish)
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-success" type="submit">ثبت اطلاعات</button>
+        </div>
+    </form>
+</section>

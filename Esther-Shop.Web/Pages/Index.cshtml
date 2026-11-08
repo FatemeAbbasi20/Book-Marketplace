@@ -1,0 +1,245 @@
+﻿@page "{handler?}"
+@using Esther_Shop.CoreLayer.Utilities
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    Layout = "_IndexLayout";
+}
+@* <!--slider area end--> 
+<!--brand area start-->
+<div class="brand_area brand_two">
+    <div class="container">
+        <div class="row">
+            <div class="col-12"> 
+                <div class="brand_container owl-carousel">
+                    <div class="single_brand">
+                        <a href="#"><img src="assets/img/brand/brand1.jpg" alt=""></a>
+                    </div>
+                    <div class="single_brand">
+                        <a href="#"><img src="assets/img/brand/brand2.jpg" alt=""></a>
+                    </div>
+                    <div class="single_brand">
+                        <a href="#"><img src="assets/img/brand/brand3.jpg" alt=""></a>
+                    </div>
+                    <div class="single_brand">
+                        <a href="#"><img src="assets/img/brand/brand4.jpg" alt=""></a>
+                    </div>
+                    <div class="single_brand">
+                        <a href="#"><img src="assets/img/brand/brand5.jpg" alt=""></a>
+                    </div>
+                    <div class="single_brand">
+                        <a href="#"><img src="assets/img/brand/brand2.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--brand area end-->
+<!--banner area start-->
+<div class="banner_area mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="single_banner">
+                    <div class="banner_thumb">
+                        <a href="#"><img src="assets/img/bg/banner6.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="single_banner">
+                    <div class="banner_thumb">
+                        <a href="#"><img src="assets/img/bg/banner7.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+@await Component.InvokeAsync("Slider")
+<section class="product_area mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_title">
+                    <h2>معاملات داغ </h2>
+                </div>
+            </div>
+        </div>
+        <div class="product_container">
+            <div class="product_carousel product_column5 owl-carousel">
+                @foreach (var Product in Model.PageData.DiscountedProducts)
+                { 
+                    var GalleryImage = Product.GalleryImages.FirstOrDefault();
+                    var PathGalleryImage = GalleryImage != null ? Directions.GetGalleryProductImage(GalleryImage) : "/images/no-images.jpg";
+                    <div class="single_product">
+                        <div class="product_thumb">
+                            <a class="primary_img" href="#"><img src="@Directions.GetProductImage(Product.MainImageName)" alt="@Product.Title"></a>
+                            <a class="secondary_img" href="#"><img src="@PathGalleryImage" alt="@Product.Title"></a>
+                            <div class="label_product">
+                                <span class="label_sale">@Product.DiscountPrecent%</span>
+                            </div>
+
+                             <div class="action_links">
+                                 <OpenModal url="@Url.Action("ProductModal", "Index", new { Slug = Product.Slug })" title="@Product.Title" class="quick_button"> <i class="icon-eye"></i></OpenModal>
+                                @* <ul>
+                                    <li class="wishlist"><a href="wishlist.html" title="افزودن به علاقه مندیها"><i class="icon-heart"></i></a></li>
+                                    <li class="compare"><a href="compare.html" title="مقایسه"><i class="icon-repeat"></i></a></li>
+                                    <li class="quick_button"><a href="#" data-toggle="modal" data-target="#modal_box" title="نمایش سریع"> <i class="icon-eye"></i></a></li>
+                                </ul> *@
+                            </div> 
+                            <div class="product_timing">
+                                <div data-countdown="2020/12/15"></div>
+                            </div>
+                            <div class="add_to_cart">
+                                <a asp-page="ShoppingCart" title="افزودن به سبد">افزودن به سبد</a>
+                            </div>
+                        </div>
+                        <div class="product_content">
+                            <p class="manufacture_product"><a href="#">عنوان محصول</a></p>
+                            <h4><a href="product-details.html">@Product.Title</a></h4>
+                            <div class="price_box">
+                                @if (Product.DiscountPrecent > 0)
+                                {
+                                    <span class="old_price">@Product.Price تومان</span>
+                                }
+                                <span class="current_price">@Product.GetFinalPrice() تومان</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!--product area end-->
+<!--small product area start-->
+<section class="small_product_area Categories_p_style2 mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_title">
+                    <h2>دسته های محبوب </h2>
+                </div>
+                <div class="product_carousel small_product small_product_column3 owl-carousel">
+
+                    <div class="product_items">
+                        @foreach (var Category in Model.PageData.Categories.Where(p=>p.ParentId==null))
+                        {
+                            <div class="single_product">
+                                <div class="product_thumb">
+                                    <a class="primary_img" href="product-details.html"><@Category.Title></a>
+                                </div>
+                                <div class="product_content">
+                                    <h4>@Category.Title	</h4>
+                                    @if (Model.PageData.Categories.Any(d => d.ParentId == Category.Id))
+                                    {
+                                        <ul>
+                                            @foreach(var SubCategory in Model.PageData.Categories.Where(p => p.ParentId == Category.Id))
+                                            {
+                                                <li><a asp-page="Search" asp-route-CategorySlug="@SubCategory.Slug"> @SubCategory.Title</a></li>
+                                            }
+                                        </ul>
+                                    }
+                                    <a a asp-page="Search" asp-route-CategorySlug="@Category.Slug">نمایش همه</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--small product area end-->
+<!--banner area start-->
+@* <div class="banner_fullwidth mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="banner_thumb">
+                    <a href="#"><img src="assets/img/bg/banner8.jpg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+<!--banner area end-->
+<!--product area start-->
+<section class="product_area mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product_header">
+                    <div class="section_title">
+                        <h2>تازه رسیده ها</h2>
+                    </div>
+                    <div class="product_tab_button">
+                        <ul class=" nav" role="tablist">
+                            @foreach (var item in Model.PageData.Categories.Where(f=>f.ParentId==null))
+                            {
+                                <li>
+                                    <a class="active" data-toggle="tab" href="#" onclick="GetNewestProductsBySlug('@item.Slug')" role="tab" aria-controls="automobiles" aria-selected="true">@item.Title</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content" id="NewestProducts">
+            <partial name="_NewestProducts" model="Model.PageData.NewestProducts" />  </div>
+    </div>
+</section>
+<!--product area end-->
+<!--small product area start-->
+<section class="small_product_area mb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_title">
+                    <h2>محصولات ویژه </h2>
+                </div>
+                <div class="product_carousel small_product small_product_column3 owl-carousel">
+                    <div class="product_items">
+                        @foreach(var Product in Model.PageData.SpecialProducts){
+                        <div class="single_product">
+                            <div class="product_thumb">
+                                <a class="primary_img" href="#"><img src="@Directions.GetProductImage(Product.MainImageName)" alt="@Product.Title"></a>
+                            </div>
+                            <div class="product_content">
+                                <p class="manufacture_product"><a href="#">عنوان محصول</a></p>
+                                <h4><a href="product-details.html">@Product.Title</a></h4>
+                                <div class="price_box">
+                                    @if (Product.DiscountPrecent > 0)
+                                    {
+                                        <span class="old_price">@Product.Price تومان</span>
+                                    }
+                                    <span class="current_price">@Product.GetFinalPrice() تومان</span>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--small product area end-->
+@section Scripts{
+<script>
+function GetNewestProductsBySlug(slug){
+    $.ajax({url:"/Index/GetNewestProducts?slug="+slug, type:"get",
+             beforeSend:function(){
+                        $(".loading").show();},
+                        complete:function(){
+                            $(".loading").hide();
+                        }
+    }).done(function(data){
+        $("#NewestProducts").html(data);
+    });
+};
+</script>
+}

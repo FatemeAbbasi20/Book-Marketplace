@@ -1,0 +1,62 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.Categoris
+@using Esther_Shop.CoreLayer.Dtos.DiscountCode
+@using Esther_Shop.CoreLayer.Utilities
+@model List<DiscountCodeDto>
+@{
+    ViewData["Title"] = "  کدهای تخفیف";
+    ViewData["Selected"] = "discount";
+    var Counter = 1;
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="DiscountCode" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+
+<section class="content">
+    <a class="btn btn-success" style="margin-bottom:5px" asp-area="Admin" asp-controller="DiscountCode" asp-action="Create">افزودن کد تخفیف جدید</a>
+    <div class=" box box-primary">
+        <div class="box-body p-0">
+            <table class="table table-bordered" table-hover>
+                <thead>
+                    <tr>
+                        <th> #</th>
+                        <th>کد تخفیف </th>
+                        <th> درصد تخفیف</th>
+                        <th> تاریخ انقضا </th>
+                        <th> IsActive </th>
+                        <th> عملیات</th>
+
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Counter</td>
+                            <td>@item.Code</td> 
+                            <td>@item.Precent </td>
+                            <td>@item.ExpireTime.ToPersianDate("ds d ms Y") </td>
+                            <td>@if (item.IsActive)
+                                {
+                                    <i class="fa fa-check text-success" ></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-close text-danger"></i>
+                                }
+                                </td>
+                            <td><a asp-area="Admin" asp-controller="DiscountCode" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info sm">ویرایش</a></td>
+                        </tr>
+                        Counter += 1;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

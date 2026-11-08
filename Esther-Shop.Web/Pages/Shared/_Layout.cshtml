@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+
+@{
+    var Url = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}";
+    ViewBag.Robots = "noindex,follow";
+}
+    <html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>استر - فروشگاه لیستی</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="@ViewBag.Robots??"index,follow" />
+    @await RenderSectionAsync("MetaTags",false)
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <!-- CSS
+    ========================= -->
+    <!--bootstrap min css-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!--owl carousel min css-->
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <!--slick min css-->
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <!--magnific popup min css-->
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <!--font awesome css-->
+    <link rel="stylesheet" href="assets/css/font.awesome.css">
+    <!--font ionicons css-->
+    <link rel="stylesheet" href="assets/css/ionicons.min.css">
+    <!--animate css-->
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <!--jquery ui min css-->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <!--slinky menu css-->
+    <link rel="stylesheet" href="assets/css/slinky.menu.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="assets/css/plugins.css">
+
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!--modernizr min js here-->
+    <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
+
+</head>
+
+<body>
+
+   @* <partial name="Headers/_OffcanvasMenu" /> *@
+                      
+    <header class="header_area header_p">
+        <!--header top start-->
+       <partial name="Headers/_TopHeader" />
+        <partial name="Headers/_MiddleHeader" />
+        <partial name="Headers/_BottomHeader" />
+    </header>
+    <!--header area end-->
+    <!--breadcrumbs area start-->
+    
+   @RenderBody()
+    <partial name="_Footer" />
+    <!-- modal area start-->
+    <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal_body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                <div class="modal_tab">
+                                    <div class="tab-content product-details-large">
+                                        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="assets/img/product/product1.jpg" alt=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab2" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="assets/img/product/product2.jpg" alt=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab3" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="assets/img/product/product3.jpg" alt=""></a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab4" role="tabpanel">
+                                            <div class="modal_tab_img">
+                                                <a href="#"><img src="assets/img/product/product5.jpg" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal_tab_button">
+                                        <ul class="nav product_navactive owl-carousel" role="tablist">
+                                            <li>
+                                                <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false"><img src="assets/img/product/product1.jpg" alt=""></a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false"><img src="assets/img/product/product2.jpg" alt=""></a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link button_three" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false"><img src="assets/img/product/product3.jpg" alt=""></a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link" data-toggle="tab" href="#tab4" role="tab" aria-controls="tab4" aria-selected="false"><img src="assets/img/product/product5.jpg" alt=""></a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-12">
+                                <div class="modal_right">
+                                    <div class="modal_title mb-10">
+                                        <h2>کیف دستی</h2>
+                                    </div>
+                                    <div class="modal_price mb-10">
+                                        <span class="new_price">6409 تومان</span>
+                                        <span class="old_price">8409 تومان</span>
+                                    </div>
+                                    <div class="modal_description mb-15">
+                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است </p>
+                                    </div>
+                                    <div class="variants_selects">
+                                        <div class="variants_size">
+                                            <h2>اندازه</h2>
+                                            <select class="select_option">
+                                                <option selected value="1">s</option>
+                                                <option value="1">m</option>
+                                                <option value="1">l</option>
+                                                <option value="1">xl</option>
+                                                <option value="1">xxl</option>
+                                            </select>
+                                        </div>
+                                        <div class="variants_color">
+                                            <h2>رنگ</h2>
+                                            <select class="select_option">
+                                                <option selected value="1">بنفش</option>
+                                                <option value="1">بنفشه</option>
+                                                <option value="1">سیاه</option>
+                                                <option value="1">صورتی</option>
+                                                <option value="1">نارنجی</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal_add_to_cart">
+                                            <form action="#">
+                                                <input min="1" max="100" step="1" value="1" type="number">
+                                                <button type="submit">افزودن به سبد</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal_social">
+                                        <h2>این محصول را به اشتراک بگذارید</h2>
+                                        <ul>
+                                            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=@Url"><i class="fa fa-facebook"></i></a></li>
+                                            <li class="twitter"><a  href="https://twitter.com/intent/tweet?url=@Url"><i class="fa fa-twitter"></i></a></li>
+                                            <li class="whatsapp"><a href="https://wa.me?text=@Url"><i class="fa fa-whatsapp"></i></a></li>
+                                            <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                            <li class="telegram"><a href="https://t.me/share/url?url=@Url"><i class="fa fa-telegram"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal area end-->
+    <!-- JS
+    ============================================ -->
+    <!--jquery min js-->
+    <script src="assets/js/vendor/jquery-3.4.1.min.js"></script>
+    <!--popper min js-->
+    <script src="assets/js/popper.js"></script>
+    <!--bootstrap min js-->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!--owl carousel min js-->
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <!--slick min js-->
+    <script src="assets/js/slick.min.js"></script>
+    <!--magnific popup min js-->
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <!--jquery countdown min js-->
+    <script src="assets/js/jquery.countdown.js"></script>
+    <!--jquery ui min js-->
+    <script src="assets/js/jquery.ui.js"></script>
+    <!--jquery elevatezoom min js-->
+    <script src="assets/js/jquery.elevatezoom.js"></script>
+    <!--isotope packaged min js-->
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <!--slinky menu js-->
+    <script src="assets/js/slinky.menu.js"></script>
+    <!-- Plugins JS -->
+    <script src="assets/js/plugins.js"></script>
+    <script src="/js/Custom.js"></script>
+    <!-- Main JS -->
+    <script src="assets/js/main.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="/assets/js/Custom.js"></script>
+    @RenderSection("Scripts",false)
+</body>
+
+
+</html>

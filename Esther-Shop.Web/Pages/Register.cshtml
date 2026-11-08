@@ -1,0 +1,39 @@
+﻿@page
+@model Esther_Shop.Web.Pages.RegisterModel
+@{
+}
+<div class="customer_login mt-32">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="account_form register">
+                    <h2>ثبت نام</h2>
+                    <form method="post">
+                        <p>
+                            <label>نام و نام خانوادگی  <span>*</span></label>
+                            <input type="text" asp-for="FullName" placeholder="نام و نام خانوادگی  ">
+                            <span asp-validation-for="FullName"></span>
+                        </p>
+                        <p>
+                            <label>آدرس ایمیل <span>*</span></label>
+                            <input type="text" asp-for="UserEmail" placeholder="آدرس ایمیل ">
+                            <span asp-validation-for="UserEmail"></span>
+                        </p>
+                        <p>
+                            <label>رمز عبور <span>*</span></label>
+                            <input type="password" asp-for="Password" placeholder="کلمه عبور">
+                            <span asp-validation-for="Password"></span>
+                        </p>
+                        <div class="login_submit">
+                            <button type="submit">ثبت نام  </button>
+                            <p style="margin-top: 15px;">
+                                قبلاً ثبت‌نام کرده‌اید؟
+                                <a asp-page="Login" style="color: #007bff;">وارد شوید</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

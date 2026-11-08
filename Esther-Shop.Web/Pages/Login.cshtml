@@ -1,0 +1,40 @@
+﻿@page
+@model Esther_Shop.Web.Pages.LoginModel
+@{
+}
+<div class="customer_login mt-32">
+    <div class="container">
+        <div class="row">
+            <!--login area start-->
+            <div class="col-lg-6 col-md-6">
+                <div class="account_form">
+                    <h2>ورود</h2>
+                    <form method="post">
+                        <p>
+                            <label>آدرس ایمیل <span>*</span></label>
+                            <input type="text" asp-for="UserEmail" placeholder="آدرس ایمیل "/>
+                            <span asp-validation-for="UserEmail"></span>
+                        </p>
+                        <p>
+                            <label>رمز عبور <span>*</span></label>
+                            <input type="password" asp-for="Password" placeholder="کلمه عبور"/>
+                            <span asp-validation-for="Password"></span>
+                        </p>
+                        <div class="login_submit">
+                            @* <a href="#">رمزعبور خود را گم کردید؟</a> *@
+                            <label for="remember">
+                                <input id="remember" type="checkbox">
+                                مرا به خاطر بسپار
+                            </label> 
+                            <button type="submit">ورود </button>
+                            <p style="margin-top: 15px;">
+                                هنوز ثبت‌نام نکرده‌اید؟
+                                <a asp-page="Register" style="color: #007bff;">ثبت‌نام کنید</a>
+                            </p>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,123 @@
+﻿@page
+@using Esther_Shop.CoreLayer.Utilities
+@using Shop.DataLayer.Entities
+@model Esther_Shop.Web.Pages.CartModel
+@{if (TempData["ErrorMessage"]!=null)
+{
+ if(TempData["ErrorMessage"]==OperationResult.Success())
+   { 
+     <div class="btn btn-success">@TempData["ErrorMessage"]</div>
+   }
+   else
+    {
+      <div class="btn btn-danger">@TempData["ErrorMessage"]</div>
+    }
+  }
+}
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="index.html">صفحه اصلی</a></li>
+                        <li>سبد خرید فروشگاه</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.Cart.Items?.Any() == true)
+{
+    <div class="shopping_cart_area mt-32">
+        <div class="container">
+            <form asp-page-handler="Update" method="post">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="cart_page table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">حذف</th>
+                                            <th class="product_thumb">تصویر</th>
+                                            <th class="product_name">محصول</th>
+                                            <th class="product-price">قیمت</th>
+                                            <th class="product_quantity">تعداد</th>
+                                            <th class="product_total">مجموع</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach(var item in Model.Cart.Items)
+                                       {
+                                           <tr>
+                                            <td class="product_remove"><button type="submit"formmethod="post" asp-page-handler="Remove" value="@item.Id" name="CartItemId" ></button><i class="fa fa-trash-o"></i></td>
+                                            <td class="product_thumb"><a href="#"><img src="@item.ProductImage" alt=""></a></td>
+                                            <td class="product_name"><a href="#"> @item.ProductTitle</a></td>
+                                            <td class="product-price">@item.UnitPrice </td>
+                                            <td class="product_quantity"><label>تعداد</label> <input min="1" max="100" value="1" name="NewCount"  type="number">
+                                                    <input type="hidden" name="CartItemId" value="@item.Id" />     <div class="cart_submit"> <button type="submit">آپدیت سبد</button></div>
+                                                </td>
+                                            <td class="product_total">@item.TotalPrice تومان</td>
+                                        </tr>
+                                         
+                                        }
+                                    </tbody>
+                                </table>
+                            </div> 
+                           
+                        </div>
+                    </div>
+                </div>
+                </form>
+                <!--coupon code area start-->
+                <div class="coupon_area">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="coupon_code left">
+                                <h3>کد تخفیف</h3>
+                                <div class="coupon_inner">
+                                    <p>در صورت داشتن کد تخفیف خود را وارد کنید.</p>
+                                    <form asp-page-handler="ApplyDiscount">
+                                    <input placeholder="کد تخفیف" name="DiscountTitle" type="text">
+                                    <button type="submit">اعمال کد</button>
+                              </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="coupon_code right">
+                                <h3>کل سبد خرید</h3>
+                                <div class="coupon_inner">
+                                    <div class="cart_subtotal">
+                                        <p>مجموع</p>
+                                        <p class="cart_amount"> @Model.Cart.TotalPrice تومان</p>
+                                    </div>
+                                    <div class="cart_subtotal ">
+                                        <select asp-for="@Model.Cart.ShippingPrice" asp-items="Html.GetEnumSelectList<ShippingMethod>()"></select>
+                                        <p>هزینه ارسال </p>
+                                        @* @if (Model.Cart.ShippingMethod != ShippingMethod.Post){
+                                          <p class="cart_amount"><span></span> پس کرایه </p>
+                                          } *@
+                                        <p class="cart_amount"><span></span> @Shipping.GetShippingPrice(Model.Cart.ShippingMethod) تومان</p>
+                                    </div>
+                                    @* <a href="#"> و نقل را محاسبه کنید</a> *@
+
+                                    <div class="cart_subtotal">
+                                        <p>قیمت نهایی</p>
+                                        <p class="cart_amount"> @Model.Cart.FinalPrice تومان</p>
+                                    </div>
+                                    <div class="checkout_btn">
+                                        <a asp-for="Checkout">بررسی و پرداخت</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--coupon code area end-->
+        </div>
+    </div>
+}
+

@@ -1,0 +1,67 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.Posts
+@using Esther_Shop.CoreLayer.Utilities
+@model ProductDto
+@{
+    var Url = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}";
+    var MainImage = @Directions.GetProductImage(Model.MainImageName)   ;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-12">
+            <div class="modal_tab">
+                <div class="tab-content product-details-large">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <div class="modal_tab_img">
+                            <a href="#"><img src="MainImage" alt="@Model.Title"></a>
+                        </div>
+                    </div>
+                <div class="modal_tab_button">
+                    <ul class="nav product_navactive owl-carousel" role="tablist">
+                            @foreach (var image in Model.GalleryImages)
+                            {
+                                <li>
+                                    <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false"><img src="@Directions.GetGalleryProductImage(image)" alt="@Model.Title"></a>
+                                </li>
+                            }
+                        </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-12">
+            <div class="modal_right">
+                <div class="modal_title mb-10">
+                    <h2>کیف دستی</h2>
+                </div>
+                <div class="modal_price mb-10">
+                        @if (Model.DiscountPrecent > 1)
+                        {
+                            <span class="new_price">@Model.GetFinalPrice() تومان</span>
+                        }
+                        <span class="old_price">@Model.Price تومان</span>
+                </div>
+                <div class="modal_description mb-15">
+                    <p> </p>
+                </div>
+                <div class="variants_selects">
+                    <div class="modal_add_to_cart">
+                        <form action="#">
+                            <input min="1" max="@Model.Stock" step="1" value="1" type="number" @(Model.Stock<1?"disabled":"")>
+                                <button type="submit" @(Model.Stock < 1 ? "disabled" : "")>افزودن به سبد</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal_social">
+                    <h2>این محصول را به اشتراک بگذارید</h2>
+                    <ul>
+                        <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=@Url"><i class="fa fa-facebook"></i></a></li>
+                        <li class="twitter"><a href="https://twitter.com/intent/tweet?url=@Url"><i class="fa fa-twitter"></i></a></li>
+                        <li class="whatsapp"><a href="https://wa.me?text=@Url"><i class="fa fa-whatsapp"></i></a></li>
+                        <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li class="telegram"><a href="https://t.me/share/url?url=@Url"><i class="fa fa-telegram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

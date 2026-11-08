@@ -1,0 +1,51 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.Users
+@model UserFilterDto
+@{
+    ViewData["Title"] = "  کاربران";
+    ViewData["Selected"] = "user";
+    var Counter = 1;
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="User" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class=" box box-primary">
+        <div class="box-body p-0">
+            <table class="table table-bordered" table-hover>
+                <thead>
+                    <tr>
+                        <th> #</th>
+                        <th>ایمیل </th>
+                        <th> نام و نام خانوادگی</th>
+                        <th> نقش</th>
+                        <th> عملیات</th>
+
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Users)
+                    {
+                        <tr>
+                            <td>@Counter</td>
+                            <td>@item.UserEmail</td>
+                            <td> @item.FullName </td>
+                            <td> @item.Role </td>
+                            <td><OpenModal url="@Url.Action("ShowEditModal","User",new{userId=item.UserId})", title="ویرایش کاربر" >ویرایش</OpenModal></td>
+                            @* <td><a onclick="OpenModal(`/Admin/User/ShowEditModal?userId=${@item.UserId}`,'default_Modal','ویرایش کاربر')" class="btn btn-info sm" href="#">ویرایش</a></td> *@
+                        </tr>
+                        Counter += 1;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" model="@Model" />
+    </div> 
+</section>
+<!-- /.content -->

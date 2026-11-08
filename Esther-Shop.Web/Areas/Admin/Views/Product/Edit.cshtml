@@ -1,0 +1,142 @@
+﻿@using Esther_Shop.CoreLayer.Services.Category
+@using Esther_Shop.CoreLayer.Utilities
+@using Esther_Shop.Web.Areas.Admin.Models
+@using Esther_Shop.Web.Areas.Admin.Models.Product
+@model EditProductViewModel
+@inject ICategoryService _categoryService;
+@{
+    ViewData["Title"] = "ویرایش محصول ";
+    var Categories = _categoryService.GetAllCategory();
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="Home" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li><a><i asp-area="Admin" asp-controller="Product" asp-action="Index" class="fa fa-dashboard"></i>  محصولات </a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+<section class="content">
+    <form class="box box-danger" method="post" asp-area="Admin" asp-controller="Product" asp-action="Edit" enctype="multipart/form-data">
+        @Html.HiddenFor(m=>m.Id)
+        <div class="box-body row">
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Title)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Slug)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.MetaDescription)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Price)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Author)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Trenslator)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Publisher)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Stock)
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.Description)
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="GalleryImages"></label>
+                    <input type="file" asp-for="GalleryImages" class="form-control" multiple />
+                    <span asp-validation-for="GalleryImages" class="text-danger"></span>
+                </div>
+                @if (Model.ProductImages != null && Model.ProductImages.Any())
+                {
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label>تصاویر گالری (<span class="text-danger">قابل حذف</span>)</label>
+                        </div>
+              
+                    @foreach(var item in Model.ProductImages)
+                        {
+                            <div class="col-md-3 mb-3">
+                                <div class="card">
+                                    <img src="@Directions.GetGalleryProductImage(item.Name)" class="card-img-top" style="height:100px; object-fit:cover;" />
+                                    <div class="card-body p-1 text-center">
+                            @* <form method="post" asp-area="Admin" asp-controller="Product" asp-action="DeleteGalleryImages" asp-route-id="@item.Id"
+                            asp-route-productId="@Model.Id"></form>*@
+                                            <button type="button" onclick=deleteItem(`/Admin/Product/DeleteGalleryImages?id=${@item.Id}&productId =${@Model.Id}`) class="btn btn-danger btn-sm ">حذف تصویر</button>
+                           
+                            </div>
+                            </div>
+                            </div>
+						}
+                    </div>
+                }
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="@Model.CategoryId"></label>
+                    <select asp-for="@Model.CategoryId" class="form-control">
+                        <option value="null">انتخاب کنید</option>
+                        @foreach (var item in Categories.Where(c=>c.ParentId==null))
+                        {
+                            <option value="@item.Id">@item.Title </option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.CategoryId"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="@Model.SubCategoryId"></label>
+                    <select asp-for="@Model.SubCategoryId" class="form-control">
+                        <option value="null">انتخاب کنید</option>
+                        @foreach (var item in Categories.Where(n=>n.ParentId==Model.CategoryId))
+                        {
+                            <option value="@item.Id">@item.Title </option>
+                        }
+                        </select>
+                    <span asp-validation-for="@Model.SubCategoryId"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.MainImageFile)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.DiscountPrecent)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.IsSpecial)
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.IsSpecial)
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-success" type="submit">ثبت اطلاعات</button>
+        </div>
+    </div>
+    </form>
+</section>
+@section Scripts {
+    <script>
+        $("#CategoryId").Change(function(){
+            var categoryId=$(this).val();
+                console.log(categoryId);
+                        $.ajax({url:"/adminn/Category/GetChildCategories?parentId="+categoryId,
+                        type:"get" }).done(function(data){
+                            $("#SubCategoryId").html(`<option value='0'>انتخاب کنید</option>`);
+                            for(var i in data)
+                          {
+                               var category= data[i];
+                                $("#SubCategoryId").append(`<option value = '${category.Id}'>${category.Title}</option >`);
+                          }
+
+                           });
+
+        })
+    </script>
+}

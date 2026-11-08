@@ -1,0 +1,170 @@
+﻿@page "{handler?}"
+@using Esther_Shop.CoreLayer.Dtos.Products
+@using Esther_Shop.CoreLayer.Utilities
+@model Esther_Shop.Web.Pages.SearchModel
+@{
+    ViewBag.Robots = "noindex,follow";
+}
+@section MetaTags{
+    <meta name="description" content="مشاهد و خرید کتاب ها در فروشگاه ما با بهترین قیمت" />
+}
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="/">صفحه اصلی</a></li>
+                        <li>جستجوی محصولات</li>
+                        @if (!string.IsNullOrWhiteSpace(Model.Params.Title))
+                        {
+                            <li>@Model.Params.Title</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="shop_area shop_reverse">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12">
+                <!--sidebar widget start-->
+                <aside class="sidebar_widget">
+                    <div class="widget_inner">
+                        <div class="widget_list widget_filter">
+                            <h2>فیلتر بر اساس قیمت</h2>
+                            <form method="get" >
+                                <div id="slider-range"></div>
+                                <button type="submit">فیلتر</button>
+                                <input type="text" max="MaxPrice" min="MinPrice" id="amount" />
+                                <input type="hidden" asp-for="@Model.Params.MaxPrice"/>
+                                <input type="hidden" asp-for="@Model.Params.MinPrice" />
+                            </form>
+                        </div>
+                        <div class="widget_list widget_categories">
+                            <h2>دسته بندی ها</h2>
+                            <ul>
+                                @foreach (var item in Model.SearchData.Categories)
+                                {
+                                    <li>
+                                        <input type="checkbox"value="@item.Slug" name="CategorySlug">
+                                        <span class="checkmark"></span>
+                                        <label>@item.Title</label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="widget_list widget_categories">
+                            <h2>ناشر</h2>
+                            <ul>
+                                @foreach (var item in Model.SearchData.Publisher)
+                                {
+                                    <li>
+                                        <input type="checkbox" value="@item" name="Publisher">
+                                        <span class="checkmark"></span>
+                                        <label>@item</label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="widget_list widget_categories">
+                            <h2>نویسنده</h2>
+                            <ul>
+                                @foreach (var item in Model.SearchData.Author)
+                                {
+                                    <li>
+                                        <input type="checkbox" value="@item" name="Author">
+                                        <span class="checkmark"></span>
+                                        <label>@item</label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="shop_sidebar_banner">
+                        <a href="#"><img src="assets/img/bg/banner12.jpg" alt=""></a>
+                    </div>
+                </aside>
+
+                <!--sidebar widget end-->
+            </div>
+            <div class="col-lg-9 col-md-12">
+                <!--shop wrapper start-->
+                <!--shop toolbar start-->
+                <div class="shop_banner">
+                    <img src="assets/img/bg/banner11.jpg" alt="">
+                </div>
+                <div class="shop_title">
+                    <h1>فروشگاه</h1>
+                </div>
+                <div class="shop_toolbar_wrapper">
+                    <div class="shop_toolbar_btn">
+
+                        <button data-role="grid_3" type="button" class=" btn-grid-3" data-toggle="tooltip" title="3"></button>
+
+                        <button data-role="grid_4" type="button" class=" btn-grid-4" data-toggle="tooltip" title="4"></button>
+
+                        <button data-role="grid_list" type="button" class="active btn-list" data-toggle="tooltip" title="لیست"></button>
+                    </div>
+                    <div class=" niceselect_option">
+
+                        <form class="select_option"method="get" onchange="this.form.submit()">
+                            <select asp-for="@Model.Params.OrderBy" id="short">
+                                <option value="Popular">مرتب سازی بر اساس محبوبیت</option>
+                                <option value="Newest">مرتب سازی بر اساس جدید بودن</option>
+                                <option value="Cheapest">مرتب سازی بر اساس قیمت: پایین تا بالا</option>
+                                <option value="MostExpensive">مرتب سازی بر اساس قیمت: بالا تا پایین</option>
+                                <option value="Title">نام محصول: الف</option>
+                            </select>
+                        </form>
+
+
+                    </div>
+                    <div class="page_amount">
+                        <p>نمایش 1–9 از 21 نتیجه</p>
+                    </div>
+                </div>
+                <!--shop toolbar end-->
+
+                <div class="row shop_wrapper grid_list">
+                    <div class="col-12 " id="ajaxSearch">
+                      <partial name="_SearchView" />
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+     function AjaxPagination(pageId){
+         const params=new URLSearchParams(window.location.search);
+         params.set("CurrentPage",pageId);
+         $.get("/Search/Pagination?"+params.toString(),function(data){
+                 $("#ajaxSearch").html(data);
+         });
+         //    var categorySlug="";var title="";
+         // if(params.has('CategorySlug')){
+         //   var categorySlug= params.get('CategorySlug')
+         // }
+         //  if(params.has('Title')){
+         //   var title= params.get('Title')
+         // }
+         //    $.ajax({url:`/Search/Pagination?PageId=${pageId}&Title=${title}&CategorySlug=${categorySlug}`,type:"get",
+         //    beforeSend:function(){
+         //        $(".loading").show();},
+         //        complete:function(){
+         //            $(".loading").hide();
+         //        }
+         // }).done(function(data){
+         //     $("#ajaxSearch").html(data);
+         // });
+     };
+    </script>
+}
+

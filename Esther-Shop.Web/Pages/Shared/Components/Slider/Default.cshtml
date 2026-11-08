@@ -1,0 +1,25 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.Sliders
+@using Esther_Shop.CoreLayer.Utilities
+@model List<SliderDto>
+@foreach (var item in Model)
+{
+    <section class="slider_section slider_s_two">
+        <div class="slider_area owl-carousel">
+            <div class="single_slider d-flex align-items-center" data-bgimg="@Directions.GetSliderImage(item.ImageName)">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="slider_content slider_c_two">
+                                <h1>@item.Title</h1>
+                                @if (!string.IsNullOrEmpty(item.Link))
+                                {
+                                    <a href="@item.Link">خرید با تخفیف</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,65 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.Articles
+@using Esther_Shop.CoreLayer.Utilities
+@model ArticleFilterDto
+@{
+    ViewData["Title"] = " مقالات";
+    ViewData["Selected"] = "article";
+    var Counter = 1;
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="Article" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+
+<section class="content">
+    <a class="btn btn-success" style="margin-bottom:5px" asp-area="Admin" asp-controller="Product" asp-action="Create">افزودن مقاله جدید</a>
+    <div class=" box box-primary">
+        <div class="box-body p-0">
+            <table class="table table-bordered" table-hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>عکس</th>
+                        <th>عنوان</th>
+                        <th>slug</th>
+                        <th>گروه</th>
+                        <th> انتشار</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Articles)
+                    {
+                        <tr>
+                            <td>@Counter</td>
+                            <td><img style="max-width: 150px" src=@Directions.GetArticleImage(item.ImageName) />
+                            <td>@item.Title</td>
+                            <td>@item.Slug</td>
+                            <td>@item.Category?.Title??null"-"</td>
+                            <td>
+                                @if (item.IsPublish == true)
+                                {
+                                    <i class="fa fa-check text-success"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-close text-danger"></i>
+
+                                }
+                            </td>
+                            <td><a asp-area="Admin" asp-controller="Article" asp-action="Edit" asp-route-id="@item.ArticleId" class="btn btn-info sm">ویرایش</a></td>
+
+
+                        </tr>
+                        Counter += 1;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="_Pagination" model="Model" />
+    </div>
+</section>
+<!-- /.content -->

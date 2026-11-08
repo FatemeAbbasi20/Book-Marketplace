@@ -1,0 +1,52 @@
+﻿@{var Selected = ViewData["Selected"]?.ToString()?.ToLower();}
+
+    <aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">منو</li>
+           
+            <li class="@(Selected=="index"?"active":null)"> 
+                  <a asp-area="Admin" asp-controller="Home" asp-action="Index">
+                    <i class="fa fa-dashboard"></i> <span>داشبرد</span>
+                </a>
+                </li>
+
+            <li class="@(Selected == "category" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="Category" asp-action="Index">
+                    <i class="fa fa-th"></i> <span>دسته بندی محصولات</span>
+                </a>
+            </li>
+            <li class="@(Selected == "product" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="Product" asp-action="Index">
+                    <i class="fa fa-th"></i> <span> محصولات</span>
+                </a>
+            </li>
+            <li class="@(Selected == "slider" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="Slider" asp-action="Index">
+                    <i class="fa fa-th"></i> <span> اسلایدرها</span>
+                </a>
+            </li>
+            <li class="@(Selected == "user" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                    <i class="fa fa-th"></i> <span> کاربران</span>
+                </a>
+            </li>
+            <li class="@(Selected == "discount" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="DiscountCode" asp-action="Index">
+                    <i class="fa fa-th"></i> <span> کدهای تخفیف</span>
+                </a>
+            </li>
+            <li class="@(Selected == "article" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="Article" asp-action="Index">
+                    <i class="fa fa-th"></i> <span>  مقالات</span>
+                </a>
+            </li>
+            <li class="@(Selected == "articleCategory" ? "active" : null)">
+                <a asp-area="Admin" asp-controller="ArticleCategory" asp-action="Index">
+                    <i class="fa fa-th"></i> <span>  دسته بندی مقالات</span>
+                </a>
+            </li>
+            
+           </ul>
+    </section>
+</aside>

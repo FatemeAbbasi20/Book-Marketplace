@@ -1,0 +1,31 @@
+﻿
+@using Esther_Shop.Web.Areas.Admin.Models.CategoryArticle
+
+@model CreateCategoryArticleViewModel
+@{
+    ViewData["Title"] = "افزودن دسته بندی";
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="Home" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li><a><i asp-area="Admin" asp-controller="ArticleCategory" asp-action="Index" class="fa fa-dashboard"></i>  دسته بندی ها مقالات</a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form class="box box-danger" method="post" asp-area="Admin" asp-controller="Category" asp-action="Create">
+        <div class="box-body row">
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Title)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Slug)
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-success" type="submit">ثبت اطلاعات</button>
+        </div>
+    </form>
+</section>

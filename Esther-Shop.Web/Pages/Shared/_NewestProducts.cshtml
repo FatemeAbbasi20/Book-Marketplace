@@ -1,0 +1,43 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.Posts
+@using Esther_Shop.CoreLayer.Utilities
+@model List<ProductDto>
+@foreach (var Product in Model)
+{
+    var GalleryImage = Product.GalleryImages.FirstOrDefault();
+    var PathGalleryImage = GalleryImage != null ? Directions.GetGalleryProductImage(GalleryImage) : "/images/no-images.jpg";
+ 
+                <div class="tab-pane fade show active" id="automobiles" role="tabpanel">
+                    <div class="product_carousel product_column5 owl-carousel">
+                        <div class="single_product">
+                            <div class="product_thumb">
+                                <a class="primary_img" ><img src="@Directions.GetProductImage(Product.MainImageName)" alt="@Product.Title"></a>
+                             <a class="secondary_img"><img src="@PathGalleryImage" alt="@Product.Title"></a>
+                                <div class="action_links">
+                        <OpenModal url="@Url.Action("ProductModal", "Index", new { Slug = Product.Slug })" title="@Product.Title" class="quick_button"> <i class="icon-eye"></i></OpenModal>
+                                    @* <ul>
+                                        data-toggle="modal" data-target="#modal_box"
+                                        <li class="wishlist"><a href="wishlist.html" title="افزودن به علاقه مندیها"><i class="icon-heart"></i></a></li> 
+                                        <li class="compare"><a href="compare.html" title="مقایسه"><i class="icon-repeat"></i></a></li>
+                                    </ul> *@
+                                </div>
+                                <div class="add_to_cart">
+                                    <a asp-page="ShoppingCart" title="افزودن به سبد">افزودن به سبد</a>
+                                </div>
+                            </div>
+                            <div class="product_content">
+                                <p class="manufacture_product"><a href="#">عنوان محصول</a></p>
+                                <h4><a href="product-details.html">@Product.Title</a></h4>
+                                <div class="price_box">
+                        @if (Product.DiscountPrecent > 0)
+                        {
+                            <span class="old_price">@Product.Price تومان</span>
+                        }
+                        <span class="current_price">@Product.GetFinalPrice() تومان</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+}

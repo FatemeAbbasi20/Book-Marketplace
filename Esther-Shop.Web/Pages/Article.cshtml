@@ -1,0 +1,214 @@
+﻿@page
+@using Esther_Shop.CoreLayer.Services.ArticleCategory
+@using Esther_Shop.CoreLayer.Utilities
+@model Esther_Shop.Web.Pages.ArticleModel
+@inject IArticleCategoryService _categoryService
+@{
+    var categories = _categoryService.GetAllArticleCategory();
+    var Url = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{HttpContext.Request.Path}";
+}
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="index.html">صفحه اصلی</a></li>
+                        <li>جزئیات بلاگ</li>
+                        <li><a href="#">@Model.Article.Category?.Title</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--blog body area start-->
+<div class="blog_details blog_padding mt-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12">
+                <!--blog grid area start-->
+                <div class="blog_details_wrapper">
+                    <div class="blog_thumb">
+                        <a href="#"><img src="@Directions.GetArticleImage(Model.Article.ImageName)" alt=""></a>
+                    </div>
+                    <div class="blog_content">
+                        <h3 class="post_title">@Model.Article.Title</h3>
+                        <div class="post_meta">
+                            <span><i class="ion-person"></i> پست شده توسط </span>
+                            <span><a href="#">@Model.Article.UserFullName</a></span>
+                            <span>|</span>
+                            <span><i class="fa fa-calendar" aria-hidden="true"></i>  @Model.Article.CreationDate.ToPersianDate() 	</span>
+
+                        </div>
+                        <div class="post_content">
+                            <p>@Model.Article.Description</p>
+
+                        </div>
+                        @* <div class="entry_content">
+                            <div class="post_meta">
+                                <span>برچسب ها: </span>
+                                <span><a href="#">, مدلینگ</a></span>
+                                <span><a href="#">, تی شرت</a></span>
+                                <span><a href="#">, پیراهن</a></span>
+                            </div> *@
+
+                            <div class="social_sharing">
+                                <h3>این پست رو به اشتراک بگذارید:</h3>
+                                <ul>
+                                <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=@Url"><i class="fa fa-facebook"></i></a></li>
+                                <li class="twitter"><a href="https://twitter.com/intent/tweet?url=@Url"><i class="fa fa-twitter"></i></a></li>
+                                <li class="whatsapp"><a href="https://wa.me?text=@Url"><i class="fa fa-whatsapp"></i></a></li>
+                                <li class="telegram"><a href="https://t.me/share/url?url=@Url"><i class="fa fa-telegram"></i></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.RelatedArticles.Any()==true)
+                {
+                    <div class="related_posts">
+                        <h3>پست های مرتبط</h3>
+                        <div class="row">
+                            @foreach (var Article in Model.RelatedArticles)
+                            {
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="single_related">
+                                        <div class="related_thumb">
+                                            <img src="@Directions.GetArticleImage(Article.ImageName)" alt="">
+                                        </div>
+                                        <div class="related_content">
+                                            <h3><a href="#">@Article.Title</a></h3>
+                                            <span><i class="fa fa-calendar" aria-hidden="true"></i> @Article.CreationDate.ToPersianDate() </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    }
+                    @if(Model.Comments?.Any()==true){
+                    <div class="comments_box">
+                        <h3>@Model.Comments.Count نظر </h3>
+                        <div class="comment_list">
+                            @foreach(var item in Model.Comments){
+                            <div class="comment_thumb">
+                                <img src="assets/img/blog/comment3.png.jpg" alt="">
+                            </div>
+                            <div class="comment_content">
+                                <div class="comment_meta">
+                                    <h5><a href="#">@item.UserFullname</a></h5>
+                                        <span>@item.CreationDate.ToPersianDate("ds d ms Y")</span>
+                                </div>
+                                <p>@item.Text</p>
+                                <div class="comment_reply">
+                                    <a href="#">پاسخ</a>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        </div>
+                        }
+                       @if(User.Identity.IsAuthenticated){
+                    <div class="comments_form">
+                        <h3>پیام بگذارید </h3>
+                        <p>آدرس ایمیل شما منتشر نخواهد شد. قسمت های مورد نیاز علامت گذاری شده اند *</p>
+                        <form method="post">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label asp-for="Text">نظر </label>
+                                    <textarea asp-for="Text"></textarea>
+                                    <span asp-validation-for="Text"></span>
+                                </div>
+                                @* <div class="col-lg-4 col-md-4">
+                                    <label for="author">نام</label>
+                                    <input>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <label for="email">ایمیل </label>
+                                    <input id="email" type="text">
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <label for="website">وب سایت </label>
+                                    <input id="website" type="text">
+                                </div> *@
+                            </div>
+                            <button class="button" type="submit">ارسال نظر</button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">برای ثبت نظر باید ثبت نام کنید</div>
+                }
+                <!--blog grid area start-->
+            </div>
+            <div class="col-lg-3 col-md-12">
+                <div class="blog_sidebar_widget">
+                    <div class="widget_list widget_search">
+                        <h3>جستجو</h3>
+                        <form action="#">
+                            <input placeholder="جستجو..." type="text" name="title">
+                            <button type="submit">جستجو</button>
+                        </form>
+                    </div>
+                    @* <div class="widget_list widget_tag">
+                        <h3>برچسب محصولات</h3>
+                        <div class="tag_widget">
+                            <ul>
+                                <li><a href="#">آسیایی</a></li>
+                                <li><a href="#">زندگی</a></li>
+                                <li><a href="#">یورو</a></li>
+                                <li><a href="#">مدلینگ</a></li>
+                                <li><a href="#">حرفه ای</a></li>
+                                <li><a href="#">تی شرت</a></li>
+                                <li><a href="#">پیراهن</a></li>
+                                <li><a href="#">مسافرت</a></li>
+                                <li><a href="#">خرید</a></li>
+                            </ul>
+                        </div>
+                    </div> *@
+                    @* <div class="widget_list widget_post">
+                        <h3>پست های اخیر</h3>
+                        <div class="post_wrapper">
+                            <div class="post_thumb">
+                                <a href="blog-details.html"><img src="assets/img/blog/blog12.jpg" alt=""></a>
+                            </div>
+                            <div class="post_info">
+                                <h3><a href="blog-details.html">پست تصویری وبلاگ</a></h3>
+                                <span>بهمن 1398 </span>
+                            </div>
+                        </div>
+                    </div> *@
+                    @if(Model.Comments?.Any()==true){
+                    <div class="widget_list comments_post">
+                        <h3>نظرات</h3>
+                        @foreach(var item in Model.Comments){
+                        <div class="post_wrapper">
+                            <div class="post_thumb">
+                                <a href="#"><img src="assets/img/blog/comment.png" alt=""></a>
+                            </div>
+                            <div class="post_info">
+                                <span> گفته:@item.UserFullname</span>
+                                <a href="blog-details.html">@item.Text ...</a>
+                            </div>
+                        </div>
+                       }
+                    </div>
+                    }
+                    <div class="widget_list widget_categories">
+                        <h3>دسته بندی ها</h3>
+                        <ul>
+                        @foreach (var item in categories){
+                            <li><a asp-page="SearchArticle">@item.Title</a></li> 
+                        }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

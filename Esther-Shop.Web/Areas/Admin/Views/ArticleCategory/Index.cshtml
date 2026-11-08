@@ -1,0 +1,46 @@
+﻿@using Esther_Shop.CoreLayer.Dtos.ArticleCategories
+@model List<ArticleCategoryDto>
+@{
+    ViewData["Title"] = "دسته بندی ها";
+    ViewData["Selected"] = "articleCategory";
+    var Counter = 1;
+}
+<section class="content-header">
+    <h1>@ViewData["Title"] </h1>
+    <ol class="breadcrumb">
+        <li><a><i asp-area="Admin" asp-controller="Category" asp-action="Index" class="fa fa-dashboard"></i> خانه</a></li>
+        <li class="active">@ViewData["Title"]</li>
+    </ol>
+</section>
+
+<section class="content">
+    <a class="btn btn-success" style="margin-bottom:5px" asp-area="Admin" asp-controller="ArticleCategory" asp-action="Create">افزودن گروه جدید</a>
+    <div class=" box box-primary">
+        <div class="box-body p-0">
+            <table class="table table-bordered" table-hover>
+                <thead>
+                    <tr>
+                        <th> #</th>
+                        <th>عنوان </th>
+                        <th> عملیات</th>
+
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Counter</td>
+                            <td>@item.Title</td>
+                            <td><a asp-area="Admin" asp-controller="ArticleCategory" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info sm">ویرایش</a></td>
+                        </tr>
+                        Counter += 1;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

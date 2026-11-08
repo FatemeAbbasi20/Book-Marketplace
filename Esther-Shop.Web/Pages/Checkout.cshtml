@@ -1,0 +1,211 @@
+﻿@page
+@model Esther_Shop.Web.Pages.CheckoutModel
+@{
+}
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="index.html">صفحه اصلی</a></li>
+                        <li>پرداخت</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--Checkout page section-->
+<div class="Checkout_section mt-32">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="user-actions">
+                    <h3>
+                        <i class="fa fa-file-o" aria-hidden="true"></i>
+                        مشتری برگشتی؟
+                        <a class="Returning" href="#" data-toggle="collapse" data-target="#checkout_login" aria-expanded="true">برای ورود اینجا کلیک کنید</a>
+
+                    </h3>
+                    <div id="checkout_login" class="collapse" data-parent="#accordion">
+                        <div class="checkout_info">
+                            <p>اگر قبلاً با ما خرید کرده اید ، لطفاً جزئیات خود را در جعبه های زیر وارد کنید. اگر مشتری جدیدی هستید ، لطفاً وارد بخش صورتحساب و حمل و نقل شوید.</p>
+                            <form asp-page="Login" method="post" >
+                                <div class="form_group">
+                                    <label>نام کاربری یا ایمیل <span>*</span></label>
+                                    <input type="text" name="UserEmail">
+                                </div>
+                                <div class="form_group">
+                                    <label>رمز عبور <span>*</span></label>
+                                    <input type="text" name="Password">
+                                    @* <span asp-validation-for=""></span> *@
+                                </div>
+                                <div class="form_group group_3 ">
+                                    <button type="submit">ورود</button>
+                                    <label for="remember_box">
+                                        <input id="remember_box" type="checkbox">
+                                        <span> مرا به خاطر بسپار </span>
+                                    </label>
+                                </div>
+                                @* <a href="#">فراموشی رمز عبور</a> *@
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-actions">
+                    <h3>
+                        <i class="fa fa-file-o" aria-hidden="true"></i>
+                        مشتری برگشتی؟
+                        <a class="Returning" href="#" data-toggle="collapse" data-target="#checkout_coupon" aria-expanded="true">برای وارد کردن کد خود اینجا را کلیک کنید</a>
+
+                    </h3>
+                    <div id="checkout_coupon" class="collapse" data-parent="#accordion">
+                        <div class="checkout_info">
+                            <form method="post" asp-page-handler="ApplyDiscount">
+                                <input placeholder="کد تخفیف" name="DiscountTitle"  type="text">
+                                <button type="submit">اعمال کد</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="checkout_form">
+            <div class="row">
+                <form asp-page-handler="Checkout" method="post" >
+                <div class="col-lg-6 col-md-6">
+                        <h3>جزئیات صورتحساب</h3>
+                        <div class="row">
+                            <div class="col-lg-6 mb-20">
+                                <label>نام و نام خانوادگی <span>*</span></label>
+                                <input type="text" asp-for="@Model.FinalCart.FullName" />
+                                <span asp-validation-for="@Model.FinalCart.FullName"></span>
+                            </div>
+                            <div class="col-12 mb-20">
+                                <label> شهر <span>*</span></label>
+                                <input  asp-for="@Model.FinalCart.City" type="text"/>
+                                <span asp-validation-for="@Model.FinalCart.City"></span>
+                            </div>
+                        
+                            <div class="col-12 mb-20">
+                                <label>آدرس  <span>*</span></label>
+                                <input placeholder=" خیابان " asp-for="@Model.FinalCart.Address" type="text" />
+                                <span asp-validation-for="@Model.FinalCart.Address"></span>
+                            </div>
+                            @* <div class="col-12 mb-20">
+                                <input placeholder="پلاک و واحد را وارد کنید" asp-for="@Model.FinalCart.City" type="text" />
+                                <span asp-validation-for="@Model.FinalCart.City"></span>
+                            </div> *@
+                            <div class="col-lg-6 mb-20">
+                                <label>شماره تلفن<span>*</span></label>
+                                <input  asp-for="@Model.FinalCart.PhoneNumber" type="text" />
+                                <span asp-validation-for="@Model.FinalCart.PhoneNumber"></span>
+
+                            </div>
+                            @* <div class="col-lg-6 mb-20">
+                                <label> آدرس ایمیل <span>*</span></label>
+                                <input type="text">
+
+                            </div> *@
+                            <div class="col-12 mb-20">
+                                <input id="account" type="checkbox" data-target="createp_account" />
+                                <label for="account" data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne">ایجاد حساب کاربری</label>
+
+                                <div id="collapseOne" class="collapse one" data-parent="#accordion">
+                                    <div class="card-body1">
+                                        <label> آدرس ایمیل <span>*</span></label>
+                                        <input placeholder="password" type="password">
+                                        <label> رمز عبور حساب کاربری <span>*</span></label>
+                                        <input placeholder="password" type="password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="order-notes">
+                                    <label for="order_note">یادداشت های سفارش</label>
+                                    <textarea id="order_note" asp-for="@Model.FinalCart.Notes" placeholder="یادداشتهایی درباره سفارش خود ، به عنوان مثال یادداشت های ویژه برای تحویل."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+                @if (Model.Cart.Items.Any())
+                {
+                    <div class="col-lg-6 col-md-6">
+
+                        <h3>سفارش شما</h3>
+                        <div class="order_table table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>محصول</th>
+                                        <th>مجموع</th>
+                                    </tr>
+                                </thead>
+                               
+                                <tbody>
+                                    @foreach (var item in Model.Cart.Items)
+                                    {
+                                   
+                                        <tr>
+                                            <td>  @item.ProductTitle <strong> × @item.Count</strong></td>
+                                            <td>  @item.TotalPrice تومان </td>
+                                        </tr>
+                                    }
+                                        </tbody>
+                                
+                                        <tfoot>
+                                            <tr>
+                                                <th>کل سبد</th>
+                                                <td> @Model.Cart.TotalPrice تومان</td>
+                                            </tr>
+                                            <tr>
+                                                <th>حمل و نقل</th>
+                                                <td><strong>@Model.Cart.ShippingPrice</strong></td>
+                                            </tr>
+                                            <tr class="order_total">
+                                                <th>مجموع سفارش</th>
+                                                <td><strong>@Model.Cart.FinalPrice تومان</strong></td>
+                                            </tr>
+                                        </tfoot>
+                                    
+                            </table>
+                        </div>
+                        
+                        @* <div class="payment_method">
+                            <div class="panel-default">
+                                <input id="payment" name="check_method" type="radio" data-target="createp_account" />
+                                <label for="payment" data-toggle="collapse" data-target="#method" aria-controls="method">ایجاد یک حساب کاربری؟</label>
+
+                                <div id="method" class="collapse one" data-parent="#accordion">
+                                    <div class="card-body1">
+                                        <p>لطفاً یک چک را به نام فروشگاه ، خیابان خیابان ، فروشگاه شهر ، ایالت فروشگاه / شهرستان ، کدپستی فروشگاه ارسال کنید.</p>
+                                    </div>
+                                </div>
+                            </div> *@
+                        <div class="panel-default">
+                            <input id="payment_defult" name="check_method" type="radio" data-target="createp_account" />
+                            <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">پی پال <img src="assets/img/icon/papyel.png" alt=""></label>
+
+                            <div id="collapsedefult" class="collapse one" data-parent="#accordion">
+                                <div class="card-body1">
+                                    <p>پرداخت از طریق پی پال؛ اگر حساب پی پال ندارید می توانید با کارت اعتباری خود پرداخت کنید.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order_button">
+                            <button type="submit">با پی پال ادامه دهید</button>
+                       </div>
+                       </div>
+                       }
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    
+
+<!--Checkout page section end-->

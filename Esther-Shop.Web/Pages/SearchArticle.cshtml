@@ -1,0 +1,179 @@
+﻿@page
+@using Esther_Shop.CoreLayer.Services.ArticleCategory
+@using Esther_Shop.CoreLayer.Utilities
+@model Esther_Shop.Web.Pages.SearchBlogModel
+@inject IArticleCategoryService _categoryService
+@{
+    var categories = _categoryService.GetAllArticleCategory();
+}
+<div class="breadcrumbs_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a href="index.html">صفحه اصلی</a></li>
+                        <li> همه ی مفالات</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs area end-->
+<!--blog area start-->
+@foreach(var Article in Model.Search.Articles)
+{
+<div class="blog_page_section blog_padding mt-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-12">
+                <div class="blog_wrapper blog_fullwidth">
+                    <div class="single_blog">
+                        <div class="blog_thumb_active owl-carousel">
+                            <div class="single_blog_thumb">
+                                <a href="#"><img src="@Directions.GetArticleImage(Article.ImageName)" alt="@Article.Title"></a>
+                            </div>
+                        </div>
+                        <div class="blog_content">
+                            <h3><a asp-page="Article" asp-route-slug="@Article.Slug" >@Article.Title</a></h3>
+                            <div class="blog_meta">
+                                <span class="post_date"><i class="fa-calendar fa"></i> @Article.CreationDate.ToPersianDate() </span>
+                                <span class="author"><i class="fa fa-user-circle"></i> پست شده توسط: @Article.UserFullName</span>
+                                <span class="category">
+                                    <i class="fa fa-folder-open"></i>
+                                    <a href="#">@Article.Category?.Title</a>
+                                </span>
+                            </div>
+                            @* <div class="blog_desc">
+                                <p>@Article.Description </p>
+                            </div> *@
+                            <div class="readmore_button">
+                                <a href="blog-details.html">ادامه مطلب</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12">
+                <div class="blog_sidebar_widget">
+                    <div class="widget_list widget_search">
+                        <h3>جستجو</h3>
+                        <form method="get">
+                            <input placeholder="جستجو..." type="text" name="Title">
+                            <button type="submit">جستجو</button>
+                        </form>
+                    </div>
+                    @* <div class="widget_list widget_tag">
+                        <h3>برچسب محصولات</h3>
+                        <div class="tag_widget">
+                            <ul>
+                                <li><a href="#">آسیایی</a></li>
+                                <li><a href="#">زندگی</a></li>
+                                <li><a href="#">یورو</a></li>
+                                <li><a href="#">مدلینگ</a></li>
+                                <li><a href="#">حرفه ای</a></li>
+                                <li><a href="#">تی شرت</a></li>
+                                <li><a href="#">پیراهن</a></li>
+                                <li><a href="#">مسافرت</a></li>
+                                <li><a href="#">خرید</a></li>
+                            </ul>
+                        </div>
+                    </div> *@
+                    @if(Model.LatestArticles?.Any()==true){
+                    <div class="widget_list widget_post">
+                        <h3>پست های اخیر</h3>
+                        @foreach(var item in Model.LatestArticles)
+                        {
+                            <div class="post_wrapper">
+                            <div class="post_thumb">
+                                <a href="#"><img src="@Directions.GetArticleImage(item.ImageName)" alt="@item.Title"></a>
+                            </div>
+                            <div class="post_info">
+                                            <h3><a asp-page="Article" asp-route-slug="@Article.Slug" >@Article.Title</a></h3>
+                                <span>@item.CreationDate.ToPersianDate()  </span>
+                            </div>
+                        </div>
+                        }
+					</div>
+                    }
+                    @* <div class="widget_list comments_post">
+                        <h3>نظرات</h3>
+                        <div class="post_wrapper">
+                            <div class="post_thumb">
+                                <a href="blog-details.html"><img src="assets/img/blog/comment.png" alt=""></a>
+                            </div>
+                            <div class="post_info">
+                                <span>جعفر گفته:</span>
+                                <a href="blog-details.html">این عالیه که ...</a>
+                            </div>
+                        </div>
+                        
+                    </div> *@
+                    
+                    <div class="widget_list widget_categories">
+							<h3>دسته بندی ها</h3>                       
+                            <ul>
+                                @foreach (var item in categories)
+                                {
+                                    <li><a asp-page="SearchArticle">@item.Title</a></li>
+                                }
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+<!--blog area end-->
+<!--blog pagination area start-->
+@if(Model.Search.CurrentPage>1)
+{
+<div class="blog_pagination">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="pagination">
+                    <ul>
+                        @if(Model.Search.CurrentPage>1)
+                            {
+                                <li class="previous"><a href="#" onclick="AjaxPagination(@(Model.Search.CurrentPage - 1))">قبلی</a></li>
+                            }
+                          @for(var i=Model.Search.StartPage;i<=Model.Search.EndPage;i++)
+                            {
+                                if (Model.Search.CurrentPage == i)
+                                {
+                                    <li class="current" @(Model.Search.CurrentPage == i ? "active" : "")><a href="#">@i</a></li>
+                                }
+                                else{
+                           <li class="current" @(Model.Search.CurrentPage==i?"active":"")><a href="#" onclick="AjaxPagination(@i)">@i</a></li>
+                                }
+                       }
+                            @if (Model.Search.PageCount > Model.Search.CurrentPage)
+                            {
+                                <li class="next"><a href="#" onclick="AjaxPagination(@(Model.Search.CurrentPage+1))">بعدی</a></li>
+                                
+                            }
+                           
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section Scripts{
+<script>
+function AjaxPagination(pageId){
+    const params=new URLSearchParams(window.location.search);
+                      params.set("pageId",pageId);
+           $.get("/SearchArticle/Pagination?"+params.toString(),function(data){
+               $("#AjaxArticle").html(data);
+           });
+
+
+        }
+</script>
+}
